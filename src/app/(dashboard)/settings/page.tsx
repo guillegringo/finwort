@@ -101,7 +101,7 @@ export default function SettingsPage() {
                     <select
                         value={theme}
                         onChange={(e) => {
-                            const newTheme = e.target.value as typeof theme;
+                            const newTheme = e.target.value || "system";
                             setTheme(newTheme);
                             router.refresh();
                         }}
