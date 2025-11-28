@@ -87,17 +87,13 @@ const SUGGESTIONS: Record<InstrumentType, { symbol: string; name: string }[]> = 
     ],
 };
 
-// Build Yahoo Finance search query based on instrument type
+// Build local proxy search query based on instrument type
 function buildSearchQuery(query: string, type: InstrumentType): string {
-    const baseUrl = "https://query1.finance.yahoo.com/v1/finance/search";
     const params = new URLSearchParams({
         q: query,
-        quotesCount: "15",
-        newsCount: "0",
-        enableFuzzyQuery: "false",
     });
 
-    return `${baseUrl}?${params.toString()}`;
+    return `/api/yahoo/search?${params.toString()}`;
 }
 
 // Filter Yahoo Finance results based on instrument type
@@ -229,9 +225,7 @@ export function TickerSearch({ value, onChange, instrumentType, placeholder }: T
                 const searchQuery = enhanceQuery(query, instrumentType);
                 const url = buildSearchQuery(searchQuery, instrumentType);
                 
-                const res = await fetch(url, {
-                    headers: { 'User-Agent': 'Mozilla/5.0' },
-                });
+                const res = await fetch(url);
 
                 if (!res.ok) throw new Error("Search failed");
 

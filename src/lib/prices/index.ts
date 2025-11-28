@@ -19,14 +19,10 @@ export interface StockQuote {
  */
 export async function getStockPrice(symbol: string): Promise<StockQuote | null> {
     try {
-        // Yahoo Finance API endpoint (free, no key needed)
-        const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`;
-        
-        const res = await fetch(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0',
-            },
-        });
+        // Use local proxy to avoid CORS issues
+        const url = `/api/yahoo/price?symbol=${encodeURIComponent(symbol)}`;
+
+        const res = await fetch(url);
 
         if (!res.ok) {
             console.error(`Failed to fetch price for ${symbol}`);
